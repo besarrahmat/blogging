@@ -2,6 +2,9 @@
 
 /** @var \Laravel\Lumen\Routing\Router $router */
 
+use App\Http\Controllers\BlogController;
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -16,3 +19,43 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->get('/key', function () {
+    return Str::random(32);
+});
+
+$router->post(
+    'auth/register',
+    [
+        'uses' => 'BlogController@register'
+    ]
+);
+
+$router->post(
+    'auth/login',
+    [
+        'uses' => 'BlogController@authenticate'
+    ]
+);
+
+$router->get('/blog', 'BlogController@index');
+
+$router->get('/blog/{id}', 'BlogController@getBlog');
+
+$router->post('/blog', 'BlogController@postBlog');
+
+$router->put('/blog/{id}', 'BlogController@putBlog');
+
+$router->delete('/blog/{id}', 'BlogController@deleteBlog');
+
+// $router->group(['middleware' => 'jwt.auth'], function() use ($router){
+//     $router->get('user/{id}', '');
+//     $router->put('user/{id}', '');
+//     $router->delete('user/{id}','');
+//     $router->get('/blog', 'BlogController@index');
+//     $router->get('/blog/{id}', 'BlogController@getBlog');
+//     $router->post('/blog', 'BlogController@postBlog');
+//     $router->put('/blog/{id}', 'BlogController@putBlog');
+//     $router->delete('/blog/{id}', 'BlogController@deleteBlog');
+   
+// });
